@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>szefitek.dev — Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Intro Page -->
+<div class="intro-overlay" id="introOverlay">
+    <div class="intro-content">
+        <div class="intro-click" id="introClick">
+            <span>CLICK ME</span>
+            <div class="click-pulse"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Profile Page -->
+<div class="profile-container" id="profileContainer">
+    <canvas id="particleCanvas"></canvas>
+    
+    <div class="profile-background"></div>
+    <div class="background-blur"></div>
+
+    <div class="profile-main">
+        <div class="profile-card" id="profileCard">
+            <div class="avatar-container">
+                <div class="avatar" style="background-image: url('https://i.pinimg.com/736x/0f/68/94/0f6894e539589a50809e45833c8bb6c4.jpg');"></div>
+                <div class="avatar-badge"><img src="https://i.pinimg.com/736x/41/2c/79/412c79c83162d2e4f40ad69d012a1728.jpg" alt="Badge"></div>
+            </div>
+
+            <div class="profile-info">
+                <h1 class="profile-name">szefitek.dev</h1>
+                <p class="profile-status">Owner</p>
+                <div class="profile-tags">
+                    <span class="tag developer">👨‍💻 Coder</span>
+                    <span class="tag owner">👑 Owner</span>
+                    <span class="tag boss">🤖 Bot</span>
+                </div>
+            </div>
+
+            <div class="about-me">
+                <p>Web Dev • Music Love • Never stop coding</p>
+            </div>
+
+            <div class="social-links-profile">
+                <a href="https://github.com/szefitek177/bio" class="social-link github" title="GitHub">
+                    <img src="https://i.pinimg.com/1200x/66/71/3a/66713a96b9b21dffd3a85a5d748a3171.jpg" alt="GitHub">
+                </a>
+                <a href="https://www.tiktok.com/@totalszef?is_from_webapp=1&sender_device=pc" class="social-link tiktok" title="TikTok">
+                    <img src="https://i.pinimg.com/1200x/e4/15/d6/e415d6bd27900cc066d0b8b23a7f1055.jpg" alt="TikTok">
+                </a>
+                <a href="https://discord.gg/zufvJmwk" class="social-link discord" title="Discord">
+                    <img src="https://i.pinimg.com/1200x/85/e9/d7/85e9d74f125bb82aa4be2478ce02bbd4.jpg" alt="Discord">
+                </a>
+                <a href="https://twitter.com" class="social-link twitter" title="Twitter">𝕏</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============ INTRO CLICK HANDLER ============
+document.addEventListener('DOMContentLoaded', function() {
+    const introOverlay = document.getElementById('introOverlay');
+    const profileContainer = document.getElementById('profileContainer');
+    const introClick = document.getElementById('introClick');
+    
+    if (introClick) {
+        introClick.addEventListener('click', function() {
+            introOverlay.classList.add('fade-out');
+            setTimeout(() => {
+                introOverlay.style.display = 'none';
+                profileContainer.classList.add('show');
+                
+                const canvas = document.getElementById('particleCanvas');
+                if (canvas) {
+                    new ParticleSystem(canvas);
+                }
+                createAdvancedParticles();
+                createGlowEffect();
+                addPulseEffect();
+                ambientAnimation();
+                createSparkles();
+            }, 600);
+        });
+    }
+});
+
+// ============ PARTICLE SYSTEM ============
+class ParticleSystem {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        
+        this.createParticles();
+        this.animate();
+    }
+    
+    createParticles() {
+        const particleCount = 200;
+        for (let i = 0; i < particleCount; i++) {
+            this.particles.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                radius: Math.random() * 2 + 0.5,
+                opacity: Math.random() * 0.5 + 0.2,
+                color: ['#000', '#333', '#111'][Math.floor(Math.random() * 3)]
+            });
+        }
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.globalCompositeOperation = 'lighter';
+        
+        this.particles.forEach((p) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            
+            if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+            
+            this.ctx.fillStyle = p.color;
+            this.ctx.globalAlpha = p.opacity;
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            this.ctx.fill();
+        });
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// ============ ADVANCED PARTICLES ============
+function createAdvancedParticles() {
+    const container = document.querySelector('.profile-background');
+    if (!container) return;
+    
+    const particleCount = 150;
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        
+        const size = Math.random() * 3 + 1;
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        const left = Math.random() * 100;
+        
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = left + '%';
+        particle.style.animationDuration = duration + 's';
+        particle.style.animationDelay = delay + 's';
+        
+        container.appendChild(particle);
+    }
+}
+
+// ============ GLOW EFFECT ============
+function createGlowEffect() {
+    const profileCard = document.getElementById('profileCard');
+    if (!profileCard) return;
+    
+    profileCard.addEventListener('mouseover', function() {
+        this.style.filter = 'drop-shadow(0 0 30px rgba(0, 0, 0, 0.3))';
+    });
+    
+    profileCard.addEventListener('mouseout', function() {
+        this.style.filter = 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.1))';
+    });
+}
+
+// ============ PULSE EFFECT ============
+function addPulseEffect() {
+    const profileName = document.querySelector('.profile-name');
+    if (!profileName) return;
+    
+    setInterval(() => {
+        profileName.style.textShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+        setTimeout(() => {
+            profileName.style.textShadow = '0 0 5px rgba(0, 0, 0, 0.1)';
+        }, 500);
+    }, 2000);
+}
+
+// ============ AMBIENT ANIMATION ============
+function ambientAnimation() {
+    const profileCard = document.getElementById('profileCard');
+    if (!profileCard) return;
+    
+    let angle = 0;
+    setInterval(() => {
+        angle += 0.5;
+        const light = 'rgba(0, 0, 0, ' + (0.1 + Math.sin(angle * Math.PI / 180) * 0.05) + ')';
+        profileCard.style.boxShadow = `0 0 40px ${light}`;
+    }, 50);
+}
+
+// ============ SPARKLES ============
+function createSparkles() {
+    setInterval(() => {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        document.body.appendChild(sparkle);
+        
+        setTimeout(() => sparkle.remove(), 1000);
+    }, 500);
+}
+
+// ============ RIPPLE ON CLICK ============
+document.addEventListener('click', (e) => {
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple';
+    ripple.style.left = e.clientX + 'px';
+    ripple.style.top = e.clientY + 'px';
+    document.body.appendChild(ripple);
+    
+    setTimeout(() => ripple.remove(), 600);
+});
+
+// ============ WINDOW RESIZE ============
+window.addEventListener('resize', () => {
+    const canvas = document.getElementById('particleCanvas');
+    if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+});
+</script>
+
+</body>
+</html>
