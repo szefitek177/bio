@@ -1,0 +1,640 @@
+/* ============ GLOBAL STYLES ============ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+    color: #ffffff;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* ============ INTRO PAGE ============ */
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 26, 46, 0.98) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+    animation: introIn 0.8s ease-out;
+}
+
+.intro-overlay.fade-out {
+    animation: introOut 0.6s ease-in forwards;
+}
+
+@keyframes introIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes introOut {
+    to {
+        opacity: 0;
+        transform: scale(1.02);
+    }
+}
+
+.intro-content {
+    text-align: center;
+    z-index: 10000;
+}
+
+.intro-click {
+    position: relative;
+    font-size: 72px;
+    font-weight: 900;
+    cursor: pointer;
+    letter-spacing: 8px;
+    color: #ffffff;
+    text-transform: uppercase;
+    animation: glitch 3s infinite, float 3s ease-in-out infinite;
+    text-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.5),
+        0 0 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.intro-click:hover {
+    text-shadow: 
+        0 0 40px rgba(255, 255, 255, 0.8),
+        0 0 80px rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.intro-click span {
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+}
+
+.click-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: pulse-ring 2s infinite;
+}
+
+@keyframes glitch {
+    0%, 100% {
+        text-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.5),
+            0 0 40px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        text-shadow: 
+            0 0 30px rgba(255, 255, 255, 0.7),
+            0 0 60px rgba(255, 255, 255, 0.2);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+        border-color: rgba(255, 255, 255, 0);
+    }
+}
+
+/* ============ PROFILE CONTAINER ============ */
+.profile-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.profile-container.show {
+    opacity: 1;
+}
+
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0.15;
+}
+
+.profile-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.background-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.profile-main {
+    position: relative;
+    z-index: 11;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ============ PROFILE CARD ============ */
+.profile-card {
+    width: 420px;
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 30, 45, 0.95) 100%);
+    border: 4px solid rgba(0, 0, 0, 0.7);
+    border-radius: 30px;
+    padding: 40px 30px;
+    box-shadow: 
+        0 0 60px rgba(0, 0, 0, 0.4),
+        inset 0 0 40px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    position: relative;
+    animation: cardSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: default;
+    transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+    box-shadow: 
+        0 0 80px rgba(0, 0, 0, 0.5),
+        inset 0 0 40px rgba(255, 255, 255, 0.08);
+    transform: translateY(-10px);
+}
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ============ AVATAR ============ */
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 12;
+    animation: avatarSlide 0.8s ease-out 0.1s both;
+}
+
+@keyframes avatarSlide {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    animation: avatarFloat 3s ease-in-out infinite;
+    position: relative;
+}
+
+@keyframes avatarFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
+.avatar-badge {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    animation: badgePulse 2s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.avatar-badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* ============ PROFILE INFO ============ */
+.profile-info {
+    text-align: center;
+    margin-bottom: 25px;
+    animation: infoSlide 0.8s ease-out 0.2s both;
+}
+
+@keyframes infoSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-name {
+    font-size: 32px;
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: none;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.profile-name:hover {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.profile-status {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    animation: statusPulse 3s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% {
+        opacity: 0.85;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* ============ PROFILE TAGS ============ */
+.profile-tags {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    animation: tagReveal 0.6s ease-out both;
+}
+
+.tag:nth-child(1) { animation-delay: 0.3s; }
+.tag:nth-child(2) { animation-delay: 0.4s; }
+.tag:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes tagReveal {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.tag:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ============ ABOUT ME ============ */
+.about-me {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: aboutSlide 0.8s ease-out 0.3s both;
+}
+
+.about-me p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+@keyframes aboutSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============ SOCIAL LINKS ============ */
+.social-links-profile {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 0;
+    animation: socksSlide 0.8s ease-out 0.4s both;
+}
+
+@keyframes socksSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.social-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    text-decoration: none;
+    margin: 0 auto;
+    font-size: 32px;
+    color: #ffffff;
+    overflow: hidden;
+    animation: socialReveal 0.6s ease-out both;
+}
+
+.social-link:nth-child(1) { animation-delay: 0.45s; }
+.social-link:nth-child(2) { animation-delay: 0.55s; }
+.social-link:nth-child(3) { animation-delay: 0.65s; }
+.social-link:nth-child(4) { animation-delay: 0.75s; }
+
+@keyframes socialReveal {
+    from {
+        opacity: 0;
+        transform: scale(0.3) rotateY(180deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+    }
+}
+
+.social-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 13px;
+    filter: brightness(0.9);
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-8px) scale(1.08) rotateZ(5deg);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.social-link:hover img {
+    filter: brightness(1.1);
+}
+
+.social-link.twitter:hover {
+    animation: twitter-bounce 0.3s ease-out;
+}
+
+@keyframes twitter-bounce {
+    0% { transform: scale(1.08); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1.08); }
+}
+
+/* ============ FLOATING PARTICLES ============ */
+.floating-particle {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* ============ SPARKLES ============ */
+.sparkle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkleAnimation 1s ease-out forwards;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes sparkleAnimation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) translateY(-50px);
+    }
+}
+
+/* ============ RIPPLE EFFECT ============ */
+.ripple {
+    position: fixed;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: rippleEffect 0.6s ease-out forwards;
+}
+
+@keyframes rippleEffect {
+    to {
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+    }
+}
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 480px) {
+    .profile-card {
+        width: 90%;
+        padding: 30px 20px;
+        max-width: 420px;
+    }
+    
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .profile-name {
+        font-size: 28px;
+    }
+    
+    .social-links-profile {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .social-link {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+    
+    .intro-click {
+        font-size: 48px;
+        letter-spacing: 4px;
+    }
+}
+
+/* ============ DARK MODE OPTIMIZATION ============ */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+    }
+}
+
+/* ============ ANIMATIONS GALLERY ============ */
+@keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); }
+}
+
+/* Additional hover states for smoother interactions */
+button:focus, a:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.2);
+    outline-offset: 2px;
+}
